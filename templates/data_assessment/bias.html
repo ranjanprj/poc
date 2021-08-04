@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{flash}}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Assess Bias</h1>
+
+  </div>
+
+  <!-- Content Row -->
+  <div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-6">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Desc</th>
+            <th>Filename</th>
+            <th>Target</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        {% for record in context.data_assessment %}
+        <tr>
+          <td>{{record.data.0}}</td>
+          <td>{{record.data.1}}</td>
+          <td>{{record.data.2}}</td>
+          <td>{{record.data.3}}</td>
+          <form method="GET" action="/main_menu/data_assessment/bias">
+            <td>
+              <select name="target" class="form-control">
+                <option selected>Choose...</option>
+                {% for col in record.column %}
+                <option>{{col}}</option>
+                {% endfor%}
+              </select>
+
+            </td>
+            <td>
+              <input type="hidden" name="action" value="assess" />
+              <input type="hidden" name="filename" value="{{record.data.3}}" />
+
+              <input type="hidden" name="record" value="{{record.data.0}}" />
+              <button type="submit" class="btn btn-outline btn-success">Assess Bias</button>
+            </td>
+          </form>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+  {% if context['bias'] %}
+  <div class="row">
+    <div class="col-6">
+      <div class="alert alert-danger" role="alert">
+        {{context.bias.result}}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-6">
+
+      {{context.bias.target_counts|safe}}
+
+
+
+    </div>
+  </div>
+    <div class="row">
+
+      <div class="col-6">
+
+      
+
+        <img class="img-fluid" src="data:image/png;base64,{{context.bias.plot}}" alt="Red dot" />
+
+
+      </div>
+
+    </div>
+
+  {% endif %}
+
+  <!-- Content Row -->
+
+</div>
+<!-- /.container-fluid -->
+
+{% endblock %}

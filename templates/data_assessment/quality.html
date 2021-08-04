@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{flash}}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Assess Bias</h1>
+
+  </div>
+
+  <!-- Content Row -->
+  <div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-6">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Desc</th>
+            <th>Filename</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        {% for record in context.data_assessment %}
+        <tr>
+          <td>{{record.data.0}}</td>
+          <td>{{record.data.1}}</td>
+          <td>{{record.data.2}}</td>
+          <td>{{record.data.3}}</td>
+          <form method="GET" action="/main_menu/data_assessment/quality">
+            
+            <td>
+              <input type="hidden" name="action" value="quality" />
+              <input type="hidden" name="filename" value="{{record.data.3}}" />
+
+              <input type="hidden" name="record" value="{{record.data.0}}" />
+              <button type="submit" class="btn btn-outline btn-success">Assess Quality</button>
+            </td>
+          </form>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+  {% if context['quality'] %}
+  <div class="row">
+    <div class="col-6">
+        {{context.quality|safe}}
+    </div>
+  </div>
+
+
+  {% endif %}
+
+  <!-- Content Row -->
+
+</div>
+<!-- /.container-fluid -->
+
+{% endblock %}
